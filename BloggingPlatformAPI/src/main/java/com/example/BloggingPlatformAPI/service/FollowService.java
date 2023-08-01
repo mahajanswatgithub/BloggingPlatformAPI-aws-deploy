@@ -28,4 +28,11 @@ public class FollowService {
     }
 
 
+    public Follow findFollow(Integer followId) {
+        return followRepo.findById(followId).orElse(null);
+    }
+
+    public void unfollow(Follow follow) {
+        followRepo.delete(follow);
+    }
 }

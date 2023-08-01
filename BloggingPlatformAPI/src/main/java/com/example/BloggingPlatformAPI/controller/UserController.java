@@ -70,6 +70,16 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("unfollow/target/{followId}")
+    public String unFollowUser(@PathVariable Integer followId, @RequestParam String followerEmail, @RequestParam String followerToken)
+    {
+        if(authenticationService.authenticate(followerEmail,followerToken)) {
+            return userService.unFollowUser(followId,followerEmail);
+        }
+        else {
+            return "Not an Authenticated user activity!!!";
+        }
+    }
     @PostMapping("post")
     public String createBlogPost(@RequestBody Post post, @RequestParam String email, @RequestParam String token)
     {
@@ -92,6 +102,11 @@ public class UserController {
         }
     }
 
+    @PutMapping("user/post/{userId}")
+    public Post updateBlogPost(@PathVariable Integer userId, @RequestBody Post updatedPost)
+    {
+        return userService.updateBlogPost(userId,updatedPost);
+    }
     @GetMapping("posts")
     public List<Post> getAllPosts()
     {
@@ -121,11 +136,6 @@ public class UserController {
         }
     }
 
-    @PutMapping("user/post/{userId}")
-    public Post updateBlogPost(@PathVariable Integer userId, @RequestBody Post updatedPost)
-    {
-        return userService.updateBlogPost(userId,updatedPost);
-    }
 
     @GetMapping("post/{postId}")
     public Optional<Post> getPostById(@PathVariable Integer postId)

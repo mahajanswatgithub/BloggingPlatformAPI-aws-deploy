@@ -16,6 +16,8 @@ public class Post {
     private Integer PostId;
     private String postCaption;
     private String postContent;
+
+    @Enumerated(EnumType.STRING)
     private PostType postType;
 
     @ManyToOne

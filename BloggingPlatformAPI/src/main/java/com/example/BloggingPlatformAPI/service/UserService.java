@@ -225,4 +225,34 @@ public class UserService {
         return postRepo.save(existingPost);
 
     }
+
+    private boolean authorizeUnfollow(String email, Follow follow)
+    {
+        String  targetEmail = follow.getCurrentUser().getUserEmail();
+        String  followerEmail  = follow.getCurrentUserFollower().getUserEmail();
+
+        return targetEmail.equals(email) || followerEmail.equals(email);
+    }
+    public String unFollowUser(Integer followId, String followerEmail) {
+
+        Follow follow  = followService.findFollow(followId);
+        if(follow != null)
+        {
+            if(authorizeUnfollow(followerEmail,follow))
+            {
+                followService.unfollow(follow);
+                return follow.getCurrentUser().getUserName() + " not followed by " + followerEmail;
+            }
+            else
+            {
+                return "Unauthorized unfollow detected...Not allowed!!!!";
+            }
+
+        }
+        else
+        {
+            return "Invalid follow mapping";
+        }
+    }
+
 }
